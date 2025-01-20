@@ -1,14 +1,38 @@
 "use client";
-
 import React, { useEffect, useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Card, CardDescription, CardTitle, CardHeader } from '../components/ui/card';
-// import Products from '../products';
 import BarChart from './graphs/BarChart';
 import LineChart from './graphs/LineChartDays';
 import TransactionsTable from './transactions/Transctiontable';
 
 const HomeDashboard = () => {
+  const [totalExpense, setTotalExpense] = useState(0);
+  const budgetAmount = 15000;
+
+  useEffect(() => {
+    const fetchAndCalculateExpenses = () => {
+      const storedData = localStorage.getItem('financialData');
+      if (storedData) {
+        const financialData = JSON.parse(storedData);
+
+        if (Array.isArray(financialData)) {
+          const expenseTotal = financialData
+            .filter((record) => record.type === 'expense')
+            .reduce((sum, record) => sum + (record.amount || 0), 0);
+
+          setTotalExpense(expenseTotal);
+
+          // Check if the expenses exceed the budget
+          if (expenseTotal > budgetAmount) {
+            alert('You have exceeded the budget!');
+          }
+        }
+      }
+    };
+
+    fetchAndCalculateExpenses();
+  }, []);
+
   return (
     <div data-testid="main-dashboard" className='flex flex-col gap-[10px] xl:flex-row sm:gap-[12px] md:gap-[16px] lg:gap-[20px] xl:gap-[20px]'>
       <div className={`w-full lg:${"w-50%"} 2xl:w-[70%]`}>
@@ -32,7 +56,7 @@ const HomeDashboard = () => {
                       Wallet Balance
                     </p>
                     <p className="text-1xl text-gray-500">
-                      200,000000
+                      {totalExpense}
                     </p>
                   </div>
                   <BarChart />
@@ -43,7 +67,7 @@ const HomeDashboard = () => {
               <CardDescription>
                 <p className="ml-[0.7rem] mt-[1rem] text-xs text-gray-500">Account Balance</p>
                 <p className="text-2xl ml-[0.7rem] mt-[1rem] text-gray-500">
-                  {'200,000'}
+                  {totalExpense}
                 </p>
                 <LineChart />
               </CardDescription>
