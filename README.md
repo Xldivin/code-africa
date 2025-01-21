@@ -1,4 +1,4 @@
-# Financial Tracker Application Documentation
+# Wallet Application Documentation
 
 ## Overview
 The Wallet Application is a user-friendly platform designed to help individuals effectively manage their finances. The app provides features for tracking transactions, generating financial reports, setting budgets, and visualizing financial data. It supports categorization of expenses, allowing users to analyze their spending habits more effectively.
@@ -35,8 +35,8 @@ Ensure the following tools and dependencies are installed:
 
 1. Clone the Repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone <https://github.com/Xldivin/code-africa>
+   cd <expense-tracker>
    ```
 
 2. Install Dependencies:
@@ -109,8 +109,6 @@ A publicly accessible preview of the application can be found at:
 ## Contributing
 Contributions are welcome! If you find any issues or have ideas for improvements.
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
 
