@@ -7,7 +7,7 @@ import TransactionsTable from './transactions/Transctiontable';
 
 const HomeDashboard = () => {
   const [totalExpense, setTotalExpense] = useState(0);
-  const budgetAmount = 15000;
+  const budgetAmount = 300000;
 
   useEffect(() => {
     const fetchAndCalculateExpenses = () => {
@@ -51,14 +51,6 @@ const HomeDashboard = () => {
                   </div>
                 </CardTitle>
                 <CardDescription className="max-w-lg text-balance leading-relaxed">
-                  <div className="mt-[1rem]">
-                    <p className='text-xs text-gray-500'>
-                      Wallet Balance
-                    </p>
-                    <p className="text-1xl text-gray-500">
-                      {totalExpense}
-                    </p>
-                  </div>
                   <BarChart />
                 </CardDescription>
               </CardHeader>

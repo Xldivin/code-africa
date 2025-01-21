@@ -19,11 +19,24 @@ const LineChart = () => {
 
   // Fetch transactions from localStorage
   useEffect(() => {
-    const savedTransactions = localStorage.getItem('financialData');
-    if (savedTransactions) {
-      setTransactions(JSON.parse(savedTransactions));
+    // Retrieve logged-in user
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+    if (loggedInUser && loggedInUser.username) {
+        // Retrieve all financial data
+        const savedTransactions = localStorage.getItem("financialData");
+        if (savedTransactions) {
+            const parsedData = JSON.parse(savedTransactions);
+
+            // Get transactions for the logged-in user
+            const userTransactions = parsedData[loggedInUser.username] || [];
+            setTransactions(userTransactions);
+        }
+    } else {
+        console.log("No user is logged in.");
+        setTransactions([]);
     }
-  }, []);
+}, []);
 
   // Calculate total income and expense
   let totalIncome = 0;

@@ -6,26 +6,44 @@ const TransctionsForm = () => {
     const handleAddItem = async (event) => {
         event.preventDefault();
         setLoading(true);
+    
+        // Retrieve logged-in user
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+    
+        if (!loggedInUser || !loggedInUser.username) {
+            alert("No user is logged in. Please log in to save transactions.");
+            setLoading(false);
+            return;
+        }
+    
         const data = new FormData(event.currentTarget);
         const formData = Object.fromEntries(data.entries());
     
+        // Format the data
         const formattedData = {
             amount: parseFloat(formData.amount),
             description: formData.description,
-            date: parseFloat(formData.date),
+            date: formData.date, // Keep as a string if it's a date
             type: formData.type,
             category: formData.category,
         };
     
-        const existingData = JSON.parse(localStorage.getItem('financialData')) || [];
-        existingData.push(formattedData);
-        localStorage.setItem('financialData', JSON.stringify(existingData));
-        
-        alert('Transction Saved!!!!')
-
+        // Retrieve existing data for the logged-in user
+        const allData = JSON.parse(localStorage.getItem("financialData")) || {};
+        const userTransactions = allData[loggedInUser.username] || [];
+    
+        // Add the new transaction
+        userTransactions.push(formattedData);
+    
+        // Update the storage with the user's transactions
+        allData[loggedInUser.username] = userTransactions;
+        localStorage.setItem("financialData", JSON.stringify(allData));
+    
+        alert("Transaction Saved!");
+    
         event.currentTarget.reset();
         setLoading(false);
-    };
+    };    
     
 
     return (

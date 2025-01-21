@@ -8,10 +8,24 @@ export default function TransactionsTable() {
     const [itemsPerPage] = useState(2);
     const [sortConfig, setSortConfig] = useState(null);
 
+
     useEffect(() => {
-        const savedTransactions = localStorage.getItem("financialData");
-        if (savedTransactions) {
-            setTransactions(JSON.parse(savedTransactions));
+        // Retrieve logged-in user
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+        if (loggedInUser && loggedInUser.username) {
+            // Retrieve all financial data
+            const savedTransactions = localStorage.getItem("financialData");
+            if (savedTransactions) {
+                const parsedData = JSON.parse(savedTransactions);
+
+                // Get transactions for the logged-in user
+                const userTransactions = parsedData[loggedInUser.username] || [];
+                setTransactions(userTransactions);
+            }
+        } else {
+            console.log("No user is logged in.");
+            setTransactions([]);
         }
     }, []);
 
@@ -69,13 +83,6 @@ export default function TransactionsTable() {
 
     return (
         <div className="relative w-[60%] overflow-x-auto shadow-md sm:rounded-lg">
-            <input
-                type="text"
-                placeholder="Search transactions..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="mb-4 px-4 py-2 w-full border border-black bg-[#151515] rounded text-primary"
-            />
             <button
                 onClick={exportToCSV}
                 className="mb-4 px-4 py-2 bg-blue-600 text-primary rounded hover:bg-blue-700"

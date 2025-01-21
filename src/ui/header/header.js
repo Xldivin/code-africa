@@ -2,21 +2,13 @@
 import { Button } from "@/src/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { User } from 'lucide-react';
-import { DropdownMenu, DropdownMenuTrigger } from "@/src/components/ui/dropdown-menu";
-import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/src/components/ui/dropdown-menu";
 
 
 const Header = () => {
-  const pathname = usePathname();
-  const isHome = pathname === '/dashboard';
-  const isPortfolio = pathname === '/dashboard/portfolio';
-  const isWatchlist = pathname === '/dashboard/watchlist';
-  const isStock = pathname === '/dashboard/stocks' || /^\/stocks\/[^/]+$/.test(pathname);
-  const isWallet = pathname === '/dashboard/payment';
-  const isOrders = pathname === '/dashboard/orders';
-  const isCommunity = pathname === '/dashboard/community';
-
   const [username, setUsername] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
@@ -24,6 +16,11 @@ const Header = () => {
       setUsername(storedUser.username);
     }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
+    router.push("/login");
+  };
 
   return (
     <header data-testid="header" className="flex h-14 items-center bg-[#151515] gap-4 px-4 lg:h-[60px] lg:px-6">
@@ -37,6 +34,9 @@ const Header = () => {
                 <User strokeWidth={1} className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" >
+              <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>Sign Out</DropdownMenuItem>
+            </DropdownMenuContent>
           </DropdownMenu>
           <p className="mt-[0.6rem] text-gray-500">
             {username}
