@@ -18,7 +18,7 @@ const Login = () => {
     if (user) {
       localStorage.setItem("loggedInUser", JSON.stringify(user));
       alert("Login successful!");
-      router.push("/dashboard"); // Replace with your dashboard route
+      router.push("/dashboard/transactions");
     } else {
       alert("Invalid email or password");
     }
